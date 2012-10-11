@@ -5,6 +5,7 @@ public class Earth_Behavior : MonoBehaviour {
 	
 	public bool in_orbit;
 	public GameObject current_star;
+	public GameObject ghost;
 	private float speed_factor;
 	//time startd orbit (for increasing speed)
 	private float started_orbit;
@@ -14,6 +15,11 @@ public class Earth_Behavior : MonoBehaviour {
 	
 	private float leaving_speed;
 	private float leaving_time;
+	
+	private bool corrected_dir = false;
+	private bool has_entry_point = false;
+	private Vector3 first_point;
+	private float first_dist;
 	
 	//constants
 	private float TOP_SPEED = 150;
@@ -29,6 +35,29 @@ public class Earth_Behavior : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
+		if (has_entry_point) {
+			Vector3 ghost_point = ghost.transform.position;
+			first_dist = Vector3.Distance (first_point, ghost_point);
+			transform.Rotate (new Vector3 (0, 0, 180));
+			float second_dist = Vector3.Distance (first_point, ghost.transform.position);
+			transform.Rotate (new Vector3 (0, 0, -180));
+			
+			Debug.Log ("Distance difference: " + (first_dist - second_dist));
+			has_entry_point = false; 
+			corrected_dir = true;
+			if ((first_dist - second_dist) > 0)
+				transform.Rotate (new Vector3(0,0,180));
+				
+		}
+		//orbit correction
+		if (in_orbit && !corrected_dir) {
+			first_point = transform.position;
+			has_entry_point = true;
+		} 
+		
+		
+		
+		
 		//transform.RotateAround (s.transform.position, Vector3.up, 20 * Time.deltaTime);
 		if (in_orbit) {
 			go = false;
@@ -37,13 +66,14 @@ public class Earth_Behavior : MonoBehaviour {
 			speed_factor = 40 + (Mathf.Pow (Time.time - started_orbit, 2) / 4);
 			
 			if (Input.anyKeyDown) {
-				Debug.Log ("Trying to leave orbit");
+				//	Debug.Log ("Trying to leave orbit");
 				if (first_orbit)
 					first_orbit = false;
 				leaving_orbit = true;
 				in_orbit = false;
 				leaving_speed = speed_factor;
 				leaving_time = Time.time;
+				corrected_dir = false;
 			}
 			
 		} else {
@@ -79,7 +109,7 @@ public class Earth_Behavior : MonoBehaviour {
 		if (speed_factor > TOP_SPEED)
 			speed_factor = TOP_SPEED;
 		
-		Debug.Log ("current speed factor: " + speed_factor);
+		//	Debug.Log ("current speed factor: " + speed_factor);
 		
 		
 		
