@@ -31,6 +31,7 @@ public class Manager : MonoBehaviour {
 	private float theta;
 	private bool go = false;
 	private bool leaving_orbit = false;	
+	private Earth_Behavior ear;
 	//orbit radius 
 	
 
@@ -44,6 +45,8 @@ public class Manager : MonoBehaviour {
 		e = Instantiate (earth, new Vector3 (-100, -50, 0), new Quaternion (0, 0, 0, 0)) as GameObject;
 		GameObject d = Instantiate (direction, new Vector3 (-100, -50, 0), new Quaternion (0, 0, 0, 0)) as GameObject;
 		d.transform.parent = e.transform;
+		
+		ear = e.GetComponent<Earth_Behavior> ();
 		
 		s = Instantiate (star, new Vector3 (-100, 80, 0), new Quaternion (0, 0, 0, 0)) as GameObject;
 		s2 = Instantiate (star, new Vector3 (-100, -80, 0), new Quaternion (0, 0, 0, 0)) as GameObject;
@@ -132,8 +135,15 @@ public class Manager : MonoBehaviour {
 			e.transform.Translate (0, -1 * (speed_factor - 20) * Time.deltaTime, 0);
 		}
 		
-		
-		
+		if(ear.in_orbit){
+			Debug.Log("happening");
+			Camera.main.transform.position = new Vector3(ear.current_star.transform.position.x, ear.current_star.transform.position.y, transform.position.z);
+		}
+		else{
+			Debug.Log("happened");
+			Debug.Log(ear.transform.position.x + " x, y "+ ear.transform.position.y);
+			Camera.main.transform.position = new Vector3(ear.transform.position.x, ear.transform.position.y, transform.position.z);
+		}
 		
 		
 	

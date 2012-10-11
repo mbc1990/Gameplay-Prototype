@@ -1,9 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Earth_Behavior.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../../../../../Downloads/CameraMotion.cs">
     <Files>
       <File FileName="../../../../../Downloads/CameraMotion.cs" Line="1" Column="1" />
-      <File FileName="Assets/Earth_Behavior.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
